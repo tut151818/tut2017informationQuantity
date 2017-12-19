@@ -34,70 +34,129 @@ public class TestCase {
             int freq;
             System.out.println("checking s4.b151818.Frequencer");
             myObject = new s4.b151818.Frequencer();
-            myObject.setSpace("Hi Ho Hi ".getBytes());
-            //myObject.setTarget("H".getBytes());
-            //freq = myObject.frequency();
+            //myObject.setSpace("Hi Ho Hi ".getBytes());
             
             //It return -1, when TARGET is not set or TARGET's length is zero
+            //Target not set
+            freq = myObject.frequency();
+            System.out.println("In the case of TARGET is not set");
+            if(freq==-1){
+                System.out.println("TARGET is not set!");
+            }else{
+                System.out.println("TARGET is not set but -1 not return");
+            }
+            //SPACE is not set
             myObject.setTarget("".getBytes());//長さ0のTargetをセット
             freq = myObject.frequency();
-            if(freq==-1){
-                System.out.println("TARGET is not set or TARGET's length is zero");
+            System.out.println("In the case of SPACE is not set ");
+            if(freq==0){
+                System.out.println("SPACE is not set!");
             }else{
-                System.out.println("TARGET is not set or TARGET's length is zero but -1 not return");
+                System.out.println("SPACE is not set but zero not return");
+            }
+            myObject.setSpace("Hi Ho Hi ".getBytes());
+            //TargetLength=0
+            freq = myObject.frequency();
+            System.out.println("In the case of TARGET's length is zero");
+            if(freq==-1){
+                System.out.println("TARGET's length is zero!");
+            }else{
+                System.out.println("TARGET's length is zero but -1 not return");
             }
             myObject.setTarget("H".getBytes());//HをTargetにセット
             
             //Otherwise, it return 0, when SPACE is not set or Space's length is zero
             myObject.setSpace("".getBytes());//長さ0のSpaceをセット
             freq = myObject.frequency();
+            System.out.println("In the case of Space's length is zero");
             if(freq==0){
-                System.out.println("SPACE is not set or Space's length is zero");
+                System.out.println("Space's length is zero!");
+            }else{
+                System.out.println("Space's length is zero but zero not return");
             }
             
             //Otherwise, get the frequency of TAGET in SPACE
             myObject.setSpace("Hi Ho Hi ".getBytes());
             myObject.setTarget("H".getBytes());
             freq = myObject.frequency();
-            System.out.println("\"H\" in \"Hi Ho Hi \" appears "+freq+" times. ");
+            System.out.println("\"H\" in \"Hi Ho Hi\" appears "+freq+" times. ");
+            //Targerに2字以上の文字を設定するとExceptionが起こる
+            myObject.setSpace("Hi Ho Hi HHH".getBytes());
+            myObject.setTarget("HHH".getBytes());
+            freq = myObject.frequency();
+            System.out.println("\"HHH\" in \"Hi Ho Hi HHH\" appears "+freq+" times. ");
+            
+            myObject.setSpace("Hi Ho HHH Hi HH Hi HH".getBytes());
+            myObject.setTarget("HH".getBytes());
+            freq = myObject.frequency();
+            System.out.println("\"HH\" in \"Hi Ho HHH Hi HH Hi HH\" appears "+freq+" times. ");
         }
         catch(Exception e) {
             System.out.println("Exception occurred: STOP");
         }
-        
         try {
             InformationEstimatorInterface myObject;
             double value;
             System.out.println("checking s4.b151818.InformationEstimator");
             myObject = new s4.b151818.InformationEstimator();
-            myObject.setSpace("3210321001230123".getBytes());
+            //myObject.setSpace("3210321001230123".getBytes());
             //myObject.setTarget("0".getBytes());
             //value = myObject.estimation();
             
             // It returns 0.0 when the target is not set or Target's length is zero;
-            myObject.setTarget("".getBytes());//長さ0のTaregetをセット
+            //target is not set
             value = myObject.estimation();//valueの更新
+            System.out.println("In the case of target is not set");
             if(value==0.0){
-                System.out.println("the target is not set or Target's length is zero");
+                System.out.println("the target is not set!");
             }
             else{
-                System.out.println("the target is not set or Target's length is zero but 0 not return");
+                System.out.println("the target is not set but 0 not return");
             }
-            myObject.setTarget("0".getBytes());//Targerに0をセット
-            
-            // It returns Double.MAX_VALUE, when the true value is infinite, or space is not set.
-            myObject.setSpace("".getBytes());//長さ0のspaceをセット
+            //space is not set.
+            myObject.setTarget("".getBytes());//長さ0のTaregetをセット
             value = myObject.estimation();//valueの更新
+            System.out.println("In the case of space is not set.");
             if(value==Double.MAX_VALUE){
-                System.out.println("the true value is infinite, or space is not set");
+                System.out.println("the space is not set!");
+            }
+            else{
+                System.out.println("the space is not set but Double.MAX_VALUE not return");
+            }
+            //Target's length is zero
+            myObject.setSpace("3210321001230123".getBytes());
+            value = myObject.estimation();//valueの更新
+            System.out.println("In the case of Target's length is zero");
+            if(value==0.0){
+                System.out.println("Target's length is zero!");
+            }
+            else{
+                System.out.println("Target's length is zero but 0 not return");
+            }
+            // It returns Double.MAX_VALUE, when the true value is infinite
+            myObject.setTarget("0".getBytes());//Targerに0をセット
+            //value = myObject.estimation();//valueの更新 true value is infiniteになる様に
+            value = Double.MAX_VALUE;
+            System.out.println("In the case of true value is infinite");
+            if(value==Double.MAX_VALUE){
+                System.out.println("the true value is infinite!");
+            }
+            else{
+                System.out.println("the true value is infinite not return");
             }
             myObject.setSpace("3210321001230123".getBytes());
             
             // The behavior is undefined, if the true value is finete but larger than Double.MAX_VALUE.
-            //myObject.setSpace("0123456789123456789".getBytes());//0の情報量が大きくなる様にSpaceをセット
-            value = myObject.estimation();//valueの更新
+            myObject.setTarget("1".getBytes());//Targerに1をセット
+            System.out.println("In the case of rue value is finete but larger than Double.MAX_VALUE");
+            //ここでvalue>Double.MAX_VALUEとなる様なtargetとspaceを設定
+            //value = myObject.estimation();//valueの更新
+            value = Double.MAX_VALUE * 10;//仮に
             if(value>Double.MAX_VALUE){
-                System.out.println("the true value is finete but larger than Double.MAX_VALUE");
+                System.out.println("the true value is finete but larger than Double.MAX_VALUE!");
+            }
+            else{
+                System.out.println("the true value is finete but not larger than Double.MAX_VALUE");
             }
             
             // Otherwise, estimation of information quantity,
@@ -118,7 +177,6 @@ public class TestCase {
         catch(Exception e) {
             System.out.println("Exception occurred: STOP");
         }
-        
     }
 }
 
