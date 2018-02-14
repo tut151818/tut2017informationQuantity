@@ -1,4 +1,4 @@
-package s4.b151818; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID. 
+package s4.b151818; // Please modify to s4.Bnnnnnn, where nnnnnn is your student ID.
 import java.lang.*;
 import s4.specification.*;
 
@@ -40,11 +40,25 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	return  - Math.log10((double) freq / (double) mySpace.length)/ Math.log10((double) 2.0);
     }
 
-    public void setTarget(byte [] target) { myTarget = target; if(target.length>0) targetReady = true;}
+    public void setTarget(byte [] target) {
+      if(target.length>0){
+        targetReady = true;
+        myTarget = target;
+      }
+      else{
+        targetReady = false;
+      }
+    }
     public void setSpace(byte []space) {
-	myFrequencer = new Frequencer();
-	mySpace = space; myFrequencer.setSpace(space);
-	spaceReady = true;
+      if(space.length<0){
+        spaceReady = false;
+        return;
+      }
+      else{
+	       myFrequencer = new Frequencer();
+         mySpace = space; myFrequencer.setSpace(space);
+	       spaceReady = true;
+      }
     }
 
     public double estimation(){
@@ -151,5 +165,11 @@ public class InformationEstimator implements InformationEstimatorInterface{
 	myObject.setTarget("00".getBytes());
 	value = myObject.estimation();
 	System.out.println(">00 "+value);
+  myObject.setSpace("3210321001230123".getBytes());
+  myObject.setTarget("4".getBytes());
+  value = myObject.estimation();
+  System.out.println(">4 "+value);
+  System.out.println(Double.MAX_VALUE);
+
     }
 }

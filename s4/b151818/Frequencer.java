@@ -55,8 +55,8 @@ public class Frequencer implements FrequencerInterface{
         }
         return(suffixCompare(i+1,j+1));
       }*/
-      int si = suffixArray[i];//8
-      int sj = suffixArray[j];//9
+      int si = suffixArray[i];
+      int sj = suffixArray[j];
       int s =0;
       if(si > s) s = si;
       if(sj > s) s = sj;
@@ -111,7 +111,13 @@ public class Frequencer implements FrequencerInterface{
     public void setSpace(byte []space) {
       mySpace = space;
       //System.out.println("mySpace.length:"+mySpace.length);
-      if(mySpace.length>0) spaceReady = true;
+      if(mySpace.length>0){
+        spaceReady = true;
+      }
+      else{
+        spaceReady = false;
+        return;
+      }
       suffixArray = new int [space.length];
       for(int i =0;i < space.length; i++){
         suffixArray[i] = i;
@@ -130,7 +136,7 @@ public class Frequencer implements FrequencerInterface{
       }*/
       //クイックソート
       quickSort(suffixArray,0,suffixArray.length-1);
-      printSuffixArray();
+      //printSuffixArray();
     }
     private int targetCompare(int i, int start, int end) {
       // It is called from subBytesStarIndex, adn subBytesEndIndex.
@@ -195,13 +201,18 @@ public class Frequencer implements FrequencerInterface{
       //inspection code
       //for(int k=start;k<end;k++) { System.out.print(myTarget[k]); }
       //System.out.printf(": first=%d last1=%d\n", first, last1);
-
+      if(first == mySpace.length){
+        return 0;
+      }
       return last1 - first;
     }
     public void setTarget(byte [] target) {
       myTarget = target;
       if(myTarget.length>0){
         targetReady = true;
+      }
+      else{
+        targetReady = false;
       }
     }
     public int frequency() {
@@ -218,11 +229,11 @@ public class Frequencer implements FrequencerInterface{
             System.out.println("checking my Frequencer");
             myObject = new Frequencer();
             myObject.setSpace("Hi Ho Hi Ho".getBytes());
-            myObject.setTarget("H".getBytes());
+            myObject.setTarget("Hi ".getBytes());
             //myObject.setSpace("32 05834132".getBytes());
             //myObject.setTarget("3".getBytes());
             freq = myObject.frequency();
-            System.out.print("\"H\" in \"Hi Ho Hi Ho\" appears "+freq+" times. ");
+            System.out.print("\"H\" in \"Hi Ho Hi Ho \" appears "+freq+" times. ");
             if(4 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
         }
         catch(Exception e) {
